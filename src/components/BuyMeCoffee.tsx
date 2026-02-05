@@ -3,18 +3,70 @@
 import { useState } from "react";
 
 export default function BuyMeCoffee() {
-  const [hovered, setHovered] = useState(false);
+  const [coffeeHovered, setCoffeeHovered] = useState(false);
+  const [reportHovered, setReportHovered] = useState(false);
 
   return (
-    <a
-      href="https://buymeacoffee.com/dsgoose"
-      target="_blank"
-      rel="noopener noreferrer"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-yellow-400 px-4 py-3 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-yellow-300 hover:shadow-xl active:scale-95"
-      aria-label="Buy me a coffee"
-    >
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+      {/* Report Issue bubble */}
+      <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLSfnAoBRUZF07fuTarq7f_LL0KxEdQer5wKCoWfElbM4X2VIdg/viewform?usp=publish-editor"
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseEnter={() => setReportHovered(true)}
+        onMouseLeave={() => setReportHovered(false)}
+        className="flex items-center gap-2 rounded-full bg-red-100 px-4 py-3 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-red-200 hover:shadow-xl active:scale-95"
+        aria-label="Report an issue"
+      >
+        {/* Bug / report icon */}
+        <span className="text-2xl" role="img" aria-label="report">
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="drop-shadow-sm"
+          >
+            {/* Bug body */}
+            <ellipse cx="12" cy="14" rx="5" ry="6" fill="#E85D5D" opacity="0.85" />
+            {/* Bug head */}
+            <circle cx="12" cy="7.5" r="2.5" fill="#C94444" />
+            {/* Eyes */}
+            <circle cx="11" cy="7" r="0.7" fill="#FFFFFF" />
+            <circle cx="13" cy="7" r="0.7" fill="#FFFFFF" />
+            {/* Antennae */}
+            <path d="M10 5.5L8 3" stroke="#C94444" strokeWidth="1.3" strokeLinecap="round" className={reportHovered ? "animate-bounce" : ""} />
+            <path d="M14 5.5L16 3" stroke="#C94444" strokeWidth="1.3" strokeLinecap="round" className={reportHovered ? "animate-bounce" : ""} style={{ animationDelay: "0.1s" }} />
+            {/* Legs */}
+            <path d="M7.5 12L5 10.5" stroke="#C94444" strokeWidth="1.2" strokeLinecap="round" />
+            <path d="M7.2 15L5 16" stroke="#C94444" strokeWidth="1.2" strokeLinecap="round" />
+            <path d="M16.5 12L19 10.5" stroke="#C94444" strokeWidth="1.2" strokeLinecap="round" />
+            <path d="M16.8 15L19 16" stroke="#C94444" strokeWidth="1.2" strokeLinecap="round" />
+            {/* Body line */}
+            <line x1="12" y1="10" x2="12" y2="19" stroke="#FFFFFF" strokeWidth="1" opacity="0.4" />
+          </svg>
+        </span>
+
+        {/* Text - shows on hover */}
+        <span
+          className={`overflow-hidden whitespace-nowrap text-sm font-bold text-red-700 transition-all duration-300 ${
+            reportHovered ? "max-w-40 opacity-100" : "max-w-0 opacity-0"
+          }`}
+        >
+          Report an issue
+        </span>
+      </a>
+
+      {/* Buy Me Coffee bubble */}
+      <a
+        href="https://buymeacoffee.com/dsgoose"
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseEnter={() => setCoffeeHovered(true)}
+        onMouseLeave={() => setCoffeeHovered(false)}
+        className="flex items-center gap-2 rounded-full bg-yellow-400 px-4 py-3 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-yellow-300 hover:shadow-xl active:scale-95"
+        aria-label="Buy me a coffee"
+      >
       {/* Cute coffee cup */}
       <span className="text-2xl" role="img" aria-label="coffee">
         <svg
@@ -30,14 +82,14 @@ export default function BuyMeCoffee() {
             stroke="#8B6914"
             strokeWidth="1.2"
             strokeLinecap="round"
-            className={hovered ? "animate-bounce" : ""}
+            className={coffeeHovered ? "animate-bounce" : ""}
           />
           <path
             d="M12 2.5C12 2.5 12.5 0.5 14 1C15.5 1.5 15 3 15 3"
             stroke="#8B6914"
             strokeWidth="1.2"
             strokeLinecap="round"
-            className={hovered ? "animate-bounce" : ""}
+            className={coffeeHovered ? "animate-bounce" : ""}
             style={{ animationDelay: "0.1s" }}
           />
           {/* Cup body */}
@@ -89,11 +141,12 @@ export default function BuyMeCoffee() {
       {/* Text - shows on hover with smooth expand */}
       <span
         className={`overflow-hidden whitespace-nowrap text-sm font-bold text-yellow-900 transition-all duration-300 ${
-          hovered ? "max-w-40 opacity-100" : "max-w-0 opacity-0"
+          coffeeHovered ? "max-w-40 opacity-100" : "max-w-0 opacity-0"
         }`}
       >
         Buy me a coffee
       </span>
     </a>
+    </div>
   );
 }
