@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_URL = "https://tax-csv-converter.vercel.app";
+const SITE_URL = "https://1099tocsv.com";
 
 export const metadata: Metadata = {
   title: {

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://tax-csv-converter.vercel.app/</loc>
+    <loc>https://1099tocsv.com/</loc>
     <lastmod>2025-02-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://tax-csv-converter.vercel.app/fidelity</loc>
+    <loc>https://1099tocsv.com/fidelity</loc>
     <lastmod>2025-02-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://tax-csv-converter.vercel.app/robinhood</loc>
+    <loc>https://1099tocsv.com/robinhood</loc>
     <lastmod>2025-02-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://tax-csv-converter.vercel.app/schwab</loc>
+    <loc>https://1099tocsv.com/schwab</loc>
     <lastmod>2025-02-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>

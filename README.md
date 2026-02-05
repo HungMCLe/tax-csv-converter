@@ -1,14 +1,14 @@
 # 1099 to CSV Converter
 
-Convert your 1099-B tax forms to CSV — free, private, and instant.
+Convert your 1099-B tax form PDFs to CSV — free, private, and instant.
 
-**Live app: [tax-csv-converter.vercel.app](https://tax-csv-converter.vercel.app)**
+**Live at [1099tocsv.com](https://1099tocsv.com)**
 
 ## Supported Brokers
 
 - **Fidelity** — 1099-B Tax Reporting Statements
 - **Robinhood** — Consolidated Form 1099
-- **Charles Schwab** — 1099 Composite forms
+- **Charles Schwab** — 1099 Composite Forms
 
 ## How It Works
 
@@ -20,7 +20,7 @@ Convert your 1099-B tax forms to CSV — free, private, and instant.
 
 **Your data never leaves your browser.** All PDF parsing happens 100% client-side using JavaScript. No files are uploaded to any server. You can verify this yourself in your browser's Network tab — zero requests are made during processing.
 
-## CSV Columns
+## CSV Output
 
 The output CSV includes all standard 1099-B fields:
 
@@ -64,6 +64,14 @@ npm run build
 ## Contributing
 
 Pull requests are welcome! If you'd like to add support for another broker, check the existing parsers in `src/lib/parsers/` for the pattern to follow.
+
+## Report Issues
+
+Found a bug or your PDF didn't parse correctly? [Submit an issue report](https://docs.google.com/forms/d/e/1FAIpQLSfnAoBRUZF07fuTarq7f_LL0KxEdQer5wKCoWfElbM4X2VIdg/viewform).
+
+## Support
+
+If this tool saved you time, consider [buying me a coffee](https://buymeacoffee.com/dsgoose).
 
 ## License
 

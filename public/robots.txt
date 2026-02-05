@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tax-csv-converter.vercel.app/sitemap.xml
+Sitemap: https://1099tocsv.com/sitemap.xml
