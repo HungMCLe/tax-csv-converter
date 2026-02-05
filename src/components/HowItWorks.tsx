@@ -2,32 +2,32 @@
 
 export default function HowItWorks() {
   return (
-    <section className="bg-white py-16 dark:bg-gray-950">
+    <section className="bg-white py-16 dark:bg-gray-950" id="how-it-works">
       <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-center text-2xl font-bold text-gray-900 sm:text-3xl dark:text-white">
-          How It Works
+          How to Convert 1099-B to CSV
         </h2>
         <p className="mt-2 text-center text-gray-500 dark:text-gray-400">
-          Three simple steps. No account needed.
+          Three simple steps. No account needed. No data uploaded.
         </p>
 
         <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
           <Step
             number={1}
-            title="Upload your PDF"
-            description="Drag and drop your 1099-B PDF from Fidelity, Robinhood, or Schwab."
+            title="Upload your 1099-B PDF"
+            description="Drag and drop your 1099-B PDF from Fidelity, Robinhood, or Charles Schwab. We support all common tax form formats."
             icon={<UploadIcon />}
           />
           <Step
             number={2}
-            title="Auto-detect & parse"
-            description="We automatically detect your broker and extract every transaction."
+            title="Auto-detect broker & parse"
+            description="The tool automatically identifies your broker and extracts every transaction — proceeds, cost basis, gains, wash sales, and more."
             icon={<ScanIcon />}
           />
           <Step
             number={3}
-            title="Download CSV"
-            description="Get a clean, ready-to-use CSV with all your tax lot details."
+            title="Download your CSV"
+            description="Get a clean, ready-to-use CSV with all Schedule D and Form 8949 fields. Import directly into TurboTax or Excel."
             icon={<DownloadIcon />}
           />
         </div>

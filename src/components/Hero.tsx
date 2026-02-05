@@ -8,15 +8,18 @@ export default function Hero() {
           100% Free &middot; 100% Private &middot; No sign-up
         </div>
 
-        <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl dark:text-white">
+        <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl dark:text-white">
           Convert your{" "}
-          <span className="text-blue-600 dark:text-blue-400">1099 tax forms</span>{" "}
+          <span className="text-blue-600 dark:text-blue-400">1099-B PDF</span>{" "}
           to CSV
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-gray-600 dark:text-gray-400">
-          Upload your 1099-B PDF from Fidelity, Robinhood, or Schwab.
-          Get a clean CSV instantly — ready for TurboTax, Excel, or your CPA.
+          Free online 1099-B to CSV converter for{" "}
+          <strong>Fidelity</strong>, <strong>Robinhood</strong>, and{" "}
+          <strong>Charles Schwab</strong>.
+          Upload your 1099 tax form PDF and get a clean CSV instantly
+          — ready for <strong>TurboTax</strong>, Excel, Schedule D, or your CPA.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
@@ -31,6 +34,13 @@ export default function Hero() {
             Your data never leaves your browser. All processing happens locally.
           </span>
         </div>
+
+        {/* Hidden SEO text for crawlers — keyword-rich but visually subtle */}
+        <p className="mt-6 text-xs text-gray-300 dark:text-gray-700">
+          Works with Fidelity 1099-B tax reporting statements, Robinhood consolidated Form 1099,
+          and Charles Schwab 1099 composite forms. Extracts stock sales, capital gains, wash sales,
+          cost basis, and all Form 8949 fields.
+        </p>
       </div>
     </section>
   );
