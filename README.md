@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 1099 to CSV Converter
 
-## Getting Started
+Convert your 1099-B tax forms to CSV — free, private, and instant.
 
-First, run the development server:
+**Live app: [tax-csv-converter.vercel.app](https://tax-csv-converter.vercel.app)**
+
+## Supported Brokers
+
+- **Fidelity** — 1099-B Tax Reporting Statements
+- **Robinhood** — Consolidated Form 1099
+- **Charles Schwab** — 1099 Composite forms
+
+## How It Works
+
+1. Upload your 1099-B PDF
+2. The app auto-detects your broker and parses every transaction
+3. Download a clean CSV with all fields needed for Schedule D / Form 8949
+
+## Privacy
+
+**Your data never leaves your browser.** All PDF parsing happens 100% client-side using JavaScript. No files are uploaded to any server. You can verify this yourself in your browser's Network tab — zero requests are made during processing.
+
+## CSV Columns
+
+The output CSV includes all standard 1099-B fields:
+
+| Column | IRS Form Reference |
+|---|---|
+| Description | Box 1a |
+| CUSIP | — |
+| Symbol | — |
+| Date Acquired | Box 1b |
+| Date Sold | Box 1c |
+| Proceeds | Box 1d |
+| Cost or Other Basis | Box 1e |
+| Accrued Market Discount | Box 1f |
+| Wash Sale Loss Disallowed | Box 1g |
+| Gain or Loss | — |
+| Federal Tax Withheld | Box 4 |
+| Term (Short/Long) | — |
+| Basis Reported to IRS | Box 12 |
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) (static export)
+- [pdfjs-dist](https://github.com/nicktomlin/pdfjs-dist) for client-side PDF text extraction
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- TypeScript
+- Deployed on [Vercel](https://vercel.com/)
+
+## Development
 
 ```bash
+# Install dependencies
+npm install
+
+# Run dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contributing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Pull requests are welcome! If you'd like to add support for another broker, check the existing parsers in `src/lib/parsers/` for the pattern to follow.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## License
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
