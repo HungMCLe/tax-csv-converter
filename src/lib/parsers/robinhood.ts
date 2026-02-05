@@ -4,6 +4,12 @@
  *
  * Parses Robinhood Consolidated Form 1099-B pages.
  * Format: Date-first columns, "..." for empty fields, W/D markers.
+ *
+ * Handles two transaction formats:
+ * 1. Single transactions: date-first line with all fields
+ * 2. Batch transactions: header line "N transactions for MM/DD/YY..." followed
+ *    by individual lines WITHOUT a date sold, then a "Total of N transactions"
+ *    summary line (which we skip to avoid double-counting).
  */
 
 import { Transaction } from "./types";
@@ -31,7 +37,9 @@ function extract1099bPages(pagesText: string[]): string[] {
 
 /**
  * Parse a security description line like:
- * 'DELTA AIR LINES, INC. / CUSIP: 247361702 / Symbol:'
+ * 'DELTA AIR LINES, INC. / CUSIP: 247361702 / Symbol: DAL'
+ * Also handles options with blank CUSIP/Symbol:
+ * 'AAL 12/04/2020 CALL $15.00 / CUSIP: / Symbol:'
  */
 function parseDescriptionLine(
   line: string
@@ -39,14 +47,18 @@ function parseDescriptionLine(
   line = line.trim();
   if (!line) return null;
 
-  const cusipMatch = line.match(/\/\s*CUSIP:\s*(\w+)/);
-  if (!cusipMatch) return null;
+  // Must contain "/ CUSIP:" to be a description line
+  if (!/\/\s*CUSIP:/.test(line)) return null;
 
-  const cusip = cusipMatch[1];
+  // Extract CUSIP (may be blank for options)
+  const cusipMatch = line.match(/\/\s*CUSIP:\s*(\w*)/);
+  const cusip = cusipMatch ? cusipMatch[1].trim() : "";
 
+  // Extract description (everything before "/ CUSIP:")
   const descMatch = line.match(/^(.+?)\s*\/\s*CUSIP:/);
   const description = descMatch ? descMatch[1].trim() : "";
 
+  // Extract symbol (may be blank)
   const symbolMatch = line.match(/\/\s*Symbol:\s*(\w*)/);
   const symbol = symbolMatch ? symbolMatch[1].trim() : "";
 
@@ -54,7 +66,7 @@ function parseDescriptionLine(
 }
 
 /**
- * Parse a transaction line. Robinhood format:
+ * Parse a transaction line that starts with a date. Robinhood format:
  * '03/24/25 62.729 3,069.84 03/24/25 3,000.00 ... 69.84 Sale'
  * '11/25/25 1,332.406 45,368.16 Various 61,000.00 15,631.84 W 0.00 Sale'
  */
@@ -67,6 +79,9 @@ function parseTransactionLine(line: string): Partial<Transaction> | null {
 
   // Skip summary lines
   if (/ecurity/i.test(line) || /otals/i.test(line)) return null;
+
+  // Skip "Total of N transactions" aggregation lines — these duplicate individual entries
+  if (/Total of \d+ transactions/i.test(line)) return null;
 
   const tokens = line.split(/\s+/);
   if (tokens.length < 7) return null;
@@ -140,6 +155,91 @@ function parseTransactionLine(line: string): Partial<Transaction> | null {
 }
 
 /**
+ * Parse a batch transaction line (no date sold at start). Format:
+ * '1.000 85.99 12/01/20 26.00 ... 59.99 1 of 3 - Option sale to close-call'
+ * These appear under a "N transactions for MM/DD/YY" header.
+ */
+function parseBatchTransactionLine(
+  line: string,
+  batchDateSold: string
+): Partial<Transaction> | null {
+  line = line.trim();
+  if (!line) return null;
+
+  // Should NOT start with a date (those are handled by parseTransactionLine)
+  if (/^\d{2}\/\d{2}\/\d{2}\s/.test(line)) return null;
+
+  // Must contain "X of Y" pattern to be a batch sub-transaction
+  if (!/\d+ of \d+/.test(line)) return null;
+
+  const tokens = line.split(/\s+/);
+  if (tokens.length < 6) return null;
+
+  try {
+    const quantity = tokens[0];
+    const proceeds = tokens[1];
+    const dateAcquired = tokens[2]; // "MM/DD/YY"
+    const costBasis = tokens[3];
+
+    // Parse wash sale / accrued market discount column
+    let idx = 4;
+    let washSaleOrDiscount = "";
+    let washSaleType = "";
+
+    if (tokens[idx] === "...") {
+      idx++;
+    } else {
+      washSaleOrDiscount = tokens[idx];
+      idx++;
+      if (idx < tokens.length && (tokens[idx] === "W" || tokens[idx] === "D")) {
+        washSaleType = tokens[idx];
+        idx++;
+      }
+    }
+
+    // Gain or loss
+    let gainLoss = "";
+    let gainLossCode = "";
+    if (idx < tokens.length) {
+      gainLoss = tokens[idx];
+      idx++;
+      if (idx < tokens.length && (tokens[idx] === "X" || tokens[idx] === "Z")) {
+        gainLossCode = tokens[idx];
+        idx++;
+      }
+    }
+
+    // Additional information
+    const additionalInfo = idx < tokens.length ? tokens.slice(idx).join(" ") : "";
+
+    let accruedMarketDiscount = "";
+    let washSaleLoss = "";
+    if (washSaleType === "W") {
+      washSaleLoss = washSaleOrDiscount;
+    } else if (washSaleType === "D") {
+      accruedMarketDiscount = washSaleOrDiscount;
+    } else if (washSaleOrDiscount) {
+      washSaleLoss = washSaleOrDiscount;
+    }
+
+    return {
+      dateSold: batchDateSold,
+      quantity,
+      proceeds,
+      dateAcquired,
+      costBasis,
+      accruedMarketDiscount,
+      washSaleLoss,
+      gainLoss,
+      gainLossCode,
+      additionalInfo,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Parse all 1099-B pages and return transaction list.
  */
 export function parseRobinhoodTransactions(
@@ -157,6 +257,7 @@ export function parseRobinhoodTransactions(
   let currentSecurity = { description: "", cusip: "", symbol: "" };
   let currentTerm = "Short-Term";
   let currentBasisReported = "Yes";
+  let batchDateSold = ""; // Date sold for batch transaction groups
 
   for (const pageText of pages) {
     // Determine term type and basis reporting from section headers
@@ -188,10 +289,21 @@ export function parseRobinhoodTransactions(
       const desc = parseDescriptionLine(trimmed);
       if (desc) {
         currentSecurity = desc;
+        batchDateSold = ""; // Reset batch context on new security
         continue;
       }
 
-      // Check for transaction
+      // Check for batch transaction header:
+      // "3 transactions for 12/03/20. Total proceeds and cost reported to the IRS."
+      const batchHeader = trimmed.match(
+        /^\d+ transactions? for (\d{2}\/\d{2}\/\d{2})\./
+      );
+      if (batchHeader) {
+        batchDateSold = batchHeader[1];
+        continue;
+      }
+
+      // Check for regular transaction (starts with date)
       const txn = parseTransactionLine(trimmed);
       if (txn) {
         // Determine gross/net from proceeds
@@ -222,7 +334,43 @@ export function parseRobinhoodTransactions(
           term: currentTerm,
           basisReported: currentBasisReported,
         });
+        batchDateSold = ""; // Clear batch context after a dated line
         continue;
+      }
+
+      // Check for batch sub-transaction (no date, part of a batch group)
+      if (batchDateSold) {
+        const batchTxn = parseBatchTransactionLine(trimmed, batchDateSold);
+        if (batchTxn) {
+          let grossNet = "";
+          let cleanProceeds = batchTxn.proceeds || "";
+          if (cleanProceeds.endsWith("G") || cleanProceeds.endsWith("N")) {
+            grossNet = cleanProceeds.slice(-1);
+            cleanProceeds = cleanProceeds.slice(0, -1).trim();
+          }
+
+          transactions.push({
+            description: currentSecurity.description,
+            cusip: currentSecurity.cusip,
+            symbol: currentSecurity.symbol,
+            quantity: batchTxn.quantity || "",
+            dateAcquired: batchTxn.dateAcquired || "",
+            dateSold: batchTxn.dateSold || "",
+            proceeds: cleanProceeds,
+            costBasis: batchTxn.costBasis || "",
+            accruedMarketDiscount: batchTxn.accruedMarketDiscount || "",
+            washSaleLoss: batchTxn.washSaleLoss || "",
+            gainLoss: batchTxn.gainLoss || "",
+            gainLossCode: batchTxn.gainLossCode || "",
+            additionalInfo: batchTxn.additionalInfo || "",
+            grossNet,
+            fedTaxWithheld: "",
+            stateTaxWithheld: "",
+            term: currentTerm,
+            basisReported: currentBasisReported,
+          });
+          continue;
+        }
       }
     }
   }
