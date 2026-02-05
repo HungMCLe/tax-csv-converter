@@ -3,6 +3,7 @@ import HowItWorks from "@/components/HowItWorks";
 import ConverterWrapper from "@/components/ConverterWrapper";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import BuyMeCoffee from "@/components/BuyMeCoffee";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <ConverterWrapper />
       <FAQ />
       <Footer />
+      <BuyMeCoffee />
     </div>
   );
 }

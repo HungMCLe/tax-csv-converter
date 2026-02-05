@@ -11,9 +11,20 @@ export default function Footer() {
             </span>{" "}
             &mdash; Free, private, open-source tax form converter
           </div>
-          <div className="flex items-center gap-1 text-sm text-gray-400 dark:text-gray-500">
-            <LockIcon />
-            <span>All processing happens in your browser</span>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://buymeacoffee.com/dsgoose"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-sm text-yellow-600 hover:text-yellow-500 transition-colors dark:text-yellow-500 dark:hover:text-yellow-400"
+            >
+              <CoffeeIcon />
+              <span>Buy me a coffee</span>
+            </a>
+            <div className="flex items-center gap-1 text-sm text-gray-400 dark:text-gray-500">
+              <LockIcon />
+              <span>All processing happens in your browser</span>
+            </div>
           </div>
         </div>
         <div className="mt-4 text-center text-xs text-gray-400 dark:text-gray-600">
@@ -22,6 +33,14 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+function CoffeeIcon() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M2 21h18v-2H2v2zM20 8h-2V5h2v3zm0-5H4v10a4 4 0 004 4h6a4 4 0 004-4v-2h2a2 2 0 002-2V5a2 2 0 00-2-2zm-2 8h-2V5h2v6z" />
+    </svg>
   );
 }
 
