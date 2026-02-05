@@ -10,6 +10,8 @@
  * 2. Batch transactions: header line "N transactions for MM/DD/YY..." followed
  *    by individual lines WITHOUT a date sold, then a "Total of N transactions"
  *    summary line (which we skip to avoid double-counting).
+ *
+ * Also handles (cont'd) pages where a security's batch continues across pages.
  */
 
 import { Transaction } from "./types";
@@ -40,15 +42,19 @@ function extract1099bPages(pagesText: string[]): string[] {
  * 'DELTA AIR LINES, INC. / CUSIP: 247361702 / Symbol: DAL'
  * Also handles options with blank CUSIP/Symbol:
  * 'AAL 12/04/2020 CALL $15.00 / CUSIP: / Symbol:'
+ * And continuations: 'AAL 12/04/2020 CALL $15.00 / CUSIP: / Symbol: (cont'd)'
  */
 function parseDescriptionLine(
   line: string
-): { description: string; cusip: string; symbol: string } | null {
+): { description: string; cusip: string; symbol: string; continued: boolean } | null {
   line = line.trim();
   if (!line) return null;
 
   // Must contain "/ CUSIP:" to be a description line
   if (!/\/\s*CUSIP:/.test(line)) return null;
+
+  // Check if this is a continuation from previous page
+  const continued = /\(cont'd\)/i.test(line);
 
   // Extract CUSIP (may be blank for options)
   const cusipMatch = line.match(/\/\s*CUSIP:\s*(\w*)/);
@@ -58,11 +64,11 @@ function parseDescriptionLine(
   const descMatch = line.match(/^(.+?)\s*\/\s*CUSIP:/);
   const description = descMatch ? descMatch[1].trim() : "";
 
-  // Extract symbol (may be blank)
-  const symbolMatch = line.match(/\/\s*Symbol:\s*(\w*)/);
+  // Extract symbol (may be blank; strip "(cont'd)" suffix)
+  const symbolMatch = line.match(/\/\s*Symbol:\s*([^(]*)/);
   const symbol = symbolMatch ? symbolMatch[1].trim() : "";
 
-  return { description, cusip, symbol };
+  return { description, cusip, symbol, continued };
 }
 
 /**
@@ -157,7 +163,11 @@ function parseTransactionLine(line: string): Partial<Transaction> | null {
 /**
  * Parse a batch transaction line (no date sold at start). Format:
  * '1.000 85.99 12/01/20 26.00 ... 59.99 1 of 3 - Option sale to close-call'
- * These appear under a "N transactions for MM/DD/YY" header.
+ * '2.000 349.98 06/23/20 270.00 ... 79.98 2 of 2 - Option sale to close-call'
+ * Also handles lines WITHOUT "X of Y" when there's only one sub-line visible.
+ *
+ * These appear under a "N transactions for MM/DD/YY" header or at the
+ * start of a (cont'd) page.
  */
 function parseBatchTransactionLine(
   line: string,
@@ -169,11 +179,17 @@ function parseBatchTransactionLine(
   // Should NOT start with a date (those are handled by parseTransactionLine)
   if (/^\d{2}\/\d{2}\/\d{2}\s/.test(line)) return null;
 
-  // Must contain "X of Y" pattern to be a batch sub-transaction
-  if (!/\d+ of \d+/.test(line)) return null;
+  // Skip "Security total:" lines (may appear as just numbers on a separate Y line)
+  if (/^Security/i.test(line)) return null;
 
   const tokens = line.split(/\s+/);
   if (tokens.length < 6) return null;
+
+  // Token[0] should be a quantity (number), token[2] should be a date MM/DD/YY
+  // This distinguishes real transactions from Security total number lines
+  // (which have no date in position 2)
+  if (!/^\d/.test(tokens[0])) return null;
+  if (!/^\d{2}\/\d{2}\/\d{2}$/.test(tokens[2])) return null;
 
   try {
     const quantity = tokens[0];
@@ -288,8 +304,16 @@ export function parseRobinhoodTransactions(
       // Check for security description
       const desc = parseDescriptionLine(trimmed);
       if (desc) {
-        currentSecurity = desc;
-        batchDateSold = ""; // Reset batch context on new security
+        currentSecurity = {
+          description: desc.description,
+          cusip: desc.cusip,
+          symbol: desc.symbol,
+        };
+        // Only reset batch context if this is NOT a continuation page
+        // (cont'd) means the batch from the previous page continues
+        if (!desc.continued) {
+          batchDateSold = "";
+        }
         continue;
       }
 
