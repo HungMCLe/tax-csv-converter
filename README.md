@@ -1,6 +1,6 @@
 # 1099 to CSV Converter
 
-Convert your 1099-B tax form PDFs to CSV — free, private, and instant.
+This is nothing fancy, this will just convert your 1099 to CSV
 
 **Live at [1099tocsv.com](https://1099tocsv.com)**
 
