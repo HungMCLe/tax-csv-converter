@@ -11,7 +11,7 @@ export default function SupportedBrokers() {
           We parse the exact PDF format each broker uses — no manual data entry needed
         </p>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           <BrokerCard
             name="Fidelity"
             href="/fidelity"
@@ -33,6 +33,13 @@ export default function SupportedBrokers() {
             description="Handles Schwab's two-line transaction format, $-prefixed amounts, parenthesized negatives, and three-line matured Treasury bonds."
             color="sky"
           />
+          <BrokerCard
+            name="Morgan Stanley"
+            href="/morgan-stanley"
+            formName="Stock Plan Account 1099-B"
+            description="Parses Morgan Stanley's multi-line format with security descriptions, CUSIPs, covered and noncovered securities, and VARIOUS date acquired."
+            color="indigo"
+          />
         </div>
       </div>
     </section>
@@ -50,7 +57,7 @@ function BrokerCard({
   href: string;
   formName: string;
   description: string;
-  color: "green" | "lime" | "sky";
+  color: "green" | "lime" | "sky" | "indigo";
 }) {
   const colors = {
     green: {
@@ -67,6 +74,11 @@ function BrokerCard({
       border: "border-sky-200 dark:border-sky-800",
       badge: "bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300",
       hover: "hover:border-sky-400 dark:hover:border-sky-600",
+    },
+    indigo: {
+      border: "border-indigo-200 dark:border-indigo-800",
+      badge: "bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300",
+      hover: "hover:border-indigo-400 dark:hover:border-indigo-600",
     },
   };
 

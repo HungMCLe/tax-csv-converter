@@ -41,6 +41,12 @@ export default function BrokerPage({
       border: "border-sky-200 dark:border-sky-800",
       badge: "bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-950 dark:text-sky-300 dark:border-sky-800",
     },
+    indigo: {
+      bg: "from-indigo-50 to-white dark:from-indigo-950 dark:to-gray-950",
+      text: "text-indigo-600 dark:text-indigo-400",
+      border: "border-indigo-200 dark:border-indigo-800",
+      badge: "bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-950 dark:text-indigo-300 dark:border-indigo-800",
+    },
   };
 
   const colors = colorMap[color] || colorMap.green;
@@ -156,6 +162,9 @@ export default function BrokerPage({
               ),
               brokerName !== "Charles Schwab" && (
                 <a key="schwab" href="/schwab" className="font-medium text-blue-600 hover:underline dark:text-blue-400">Schwab 1099 to CSV</a>
+              ),
+              brokerName !== "Morgan Stanley" && (
+                <a key="morgan-stanley" href="/morgan-stanley" className="font-medium text-blue-600 hover:underline dark:text-blue-400">Morgan Stanley 1099 to CSV</a>
               ),
             ]
               .filter(Boolean)

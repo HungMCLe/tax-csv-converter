@@ -17,11 +17,11 @@ const SITE_URL = "https://1099tocsv.com";
 export const metadata: Metadata = {
   title: {
     default:
-      "1099 to CSV Converter — Free 1099-B PDF to CSV Tool | Fidelity, Robinhood, Schwab",
+      "1099 to CSV Converter — Free 1099-B PDF to CSV Tool | Fidelity, Robinhood, Schwab, Morgan Stanley",
     template: "%s | 1099 to CSV Converter",
   },
   description:
-    "Free online tool to convert 1099-B tax form PDFs to CSV. Supports Fidelity, Robinhood, and Charles Schwab. 100% private — runs entirely in your browser. Export transactions for TurboTax, Schedule D, Form 8949.",
+    "Free online tool to convert 1099-B tax form PDFs to CSV. Supports Fidelity, Robinhood, Charles Schwab, and Morgan Stanley. 100% private — runs entirely in your browser. Export transactions for TurboTax, Schedule D, Form 8949.",
   keywords: [
     "1099 to CSV",
     "1099-B to CSV",
@@ -32,6 +32,7 @@ export const metadata: Metadata = {
     "Fidelity 1099 to CSV",
     "Robinhood 1099 to CSV",
     "Schwab 1099 to CSV",
+    "Morgan Stanley 1099 to CSV",
     "tax form converter",
     "Schedule D CSV",
     "Form 8949 CSV",
@@ -55,7 +56,7 @@ export const metadata: Metadata = {
     siteName: "1099 to CSV Converter",
     title: "1099 to CSV — Free 1099-B PDF to CSV Converter",
     description:
-      "Convert your 1099-B tax forms from Fidelity, Robinhood, or Schwab to CSV instantly. 100% free, 100% private — all processing happens in your browser.",
+      "Convert your 1099-B tax forms from Fidelity, Robinhood, Schwab, or Morgan Stanley to CSV instantly. 100% free, 100% private — all processing happens in your browser.",
     images: [
       {
         url: "/og-image.svg",
@@ -69,7 +70,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "1099 to CSV — Free 1099-B PDF to CSV Converter",
     description:
-      "Convert 1099-B tax form PDFs to CSV. Supports Fidelity, Robinhood, Schwab. Free, private, instant.",
+      "Convert 1099-B tax form PDFs to CSV. Supports Fidelity, Robinhood, Schwab, Morgan Stanley. Free, private, instant.",
     images: ["/og-image.svg"],
   },
   robots: {
@@ -100,7 +101,7 @@ export default function RootLayout({
     name: "1099 to CSV Converter",
     url: SITE_URL,
     description:
-      "Free online tool to convert 1099-B tax form PDFs to CSV. Supports Fidelity, Robinhood, and Charles Schwab.",
+      "Free online tool to convert 1099-B tax form PDFs to CSV. Supports Fidelity, Robinhood, Charles Schwab, and Morgan Stanley.",
     applicationCategory: "FinanceApplication",
     operatingSystem: "Any",
     offers: {
@@ -112,6 +113,7 @@ export default function RootLayout({
       "Convert Fidelity 1099-B PDF to CSV",
       "Convert Robinhood 1099-B PDF to CSV",
       "Convert Charles Schwab 1099-B PDF to CSV",
+      "Convert Morgan Stanley 1099-B PDF to CSV",
       "Auto-detect broker type",
       "100% client-side processing",
       "Schedule D and Form 8949 compatible",
@@ -132,7 +134,7 @@ export default function RootLayout({
         name: "How do I convert my 1099-B PDF to CSV?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Upload your 1099-B PDF from Fidelity, Robinhood, or Charles Schwab. The tool automatically detects your broker, parses every transaction, and lets you download a clean CSV file ready for TurboTax, Schedule D, or Form 8949.",
+          text: "Upload your 1099-B PDF from Fidelity, Robinhood, Charles Schwab, or Morgan Stanley. The tool automatically detects your broker, parses every transaction, and lets you download a clean CSV file ready for TurboTax, Schedule D, or Form 8949.",
         },
       },
       {
@@ -140,7 +142,7 @@ export default function RootLayout({
         name: "Which brokers are supported?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Currently supports Fidelity, Robinhood, and Charles Schwab 1099-B tax forms. The tool auto-detects your broker from the PDF content.",
+          text: "Currently supports Fidelity, Robinhood, Charles Schwab, and Morgan Stanley 1099-B tax forms. The tool auto-detects your broker from the PDF content.",
         },
       },
       {

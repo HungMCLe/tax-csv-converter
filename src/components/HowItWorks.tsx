@@ -15,7 +15,7 @@ export default function HowItWorks() {
           <Step
             number={1}
             title="Upload your 1099-B PDF"
-            description="Drag and drop your 1099-B PDF from Fidelity, Robinhood, or Charles Schwab. We support all common tax form formats."
+            description="Drag and drop your 1099-B PDF from Fidelity, Robinhood, Charles Schwab, or Morgan Stanley. We support all common tax form formats."
             icon={<UploadIcon />}
           />
           <Step

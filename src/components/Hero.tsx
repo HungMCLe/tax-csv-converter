@@ -16,8 +16,9 @@ export default function Hero() {
 
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-gray-600 dark:text-gray-400">
           Free online 1099-B to CSV converter for{" "}
-          <strong>Fidelity</strong>, <strong>Robinhood</strong>, and{" "}
-          <strong>Charles Schwab</strong>.
+          <strong>Fidelity</strong>, <strong>Robinhood</strong>,{" "}
+          <strong>Charles Schwab</strong>, and{" "}
+          <strong>Morgan Stanley</strong>.
           Upload your 1099 tax form PDF and get a clean CSV instantly
           — ready for <strong>TurboTax</strong>, Excel, Schedule D, or your CPA.
         </p>
@@ -26,6 +27,7 @@ export default function Hero() {
           <BrokerBadge name="Fidelity" color="green" />
           <BrokerBadge name="Robinhood" color="lime" />
           <BrokerBadge name="Charles Schwab" color="sky" />
+          <BrokerBadge name="Morgan Stanley" color="indigo" />
         </div>
 
         <div className="mt-10 flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-500">
@@ -38,8 +40,8 @@ export default function Hero() {
         {/* Hidden SEO text for crawlers — keyword-rich but visually subtle */}
         <p className="mt-6 text-xs text-gray-300 dark:text-gray-700">
           Works with Fidelity 1099-B tax reporting statements, Robinhood consolidated Form 1099,
-          and Charles Schwab 1099 composite forms. Extracts stock sales, capital gains, wash sales,
-          cost basis, and all Form 8949 fields.
+          Charles Schwab 1099 composite forms, and Morgan Stanley stock plan account 1099-B.
+          Extracts stock sales, capital gains, wash sales, cost basis, and all Form 8949 fields.
         </p>
       </div>
     </section>
@@ -51,13 +53,14 @@ function BrokerBadge({
   color,
 }: {
   name: string;
-  color: "green" | "lime" | "sky";
+  color: "green" | "lime" | "sky" | "indigo";
 }) {
   const colors = {
     green:
       "bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800",
     lime: "bg-lime-50 text-lime-700 border-lime-200 dark:bg-lime-950 dark:text-lime-300 dark:border-lime-800",
     sky: "bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-950 dark:text-sky-300 dark:border-sky-800",
+    indigo: "bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-950 dark:text-indigo-300 dark:border-indigo-800",
   };
 
   return (

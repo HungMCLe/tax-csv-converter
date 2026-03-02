@@ -23,7 +23,7 @@ export interface Transaction {
   gainLossCode: string;
 }
 
-export type BrokerType = "fidelity" | "robinhood" | "schwab" | "unknown";
+export type BrokerType = "fidelity" | "robinhood" | "schwab" | "morgan-stanley" | "unknown";
 
 export interface ParseResult {
   broker: BrokerType;

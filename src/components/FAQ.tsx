@@ -11,12 +11,12 @@ const faqs: FAQItem[] = [
   {
     question: "How do I convert my 1099-B PDF to CSV?",
     answer:
-      "Simply drag and drop your 1099-B PDF into the converter above. The tool automatically detects whether it's from Fidelity, Robinhood, or Charles Schwab, extracts every transaction, and generates a downloadable CSV file — all in seconds.",
+      "Simply drag and drop your 1099-B PDF into the converter above. The tool automatically detects whether it's from Fidelity, Robinhood, Charles Schwab, or Morgan Stanley, extracts every transaction, and generates a downloadable CSV file — all in seconds.",
   },
   {
     question: "Which brokers are supported?",
     answer:
-      "We currently support Fidelity (1099-B Tax Reporting Statements), Robinhood (Consolidated Form 1099), and Charles Schwab (1099 Composite and Year-End Summary). The tool auto-detects your broker from the PDF. More brokers may be added in the future.",
+      "We currently support Fidelity (1099-B Tax Reporting Statements), Robinhood (Consolidated Form 1099), Charles Schwab (1099 Composite and Year-End Summary), and Morgan Stanley (Stock Plan Account 1099-B). The tool auto-detects your broker from the PDF.",
   },
   {
     question: "Is this 1099 to CSV converter really free?",
@@ -57,6 +57,11 @@ const faqs: FAQItem[] = [
     question: "How do I convert my Schwab 1099 to CSV?",
     answer:
       "Upload your Charles Schwab 1099 Composite PDF. The converter handles Schwab's unique two-line transaction format, including dollar-sign prefixed amounts, parenthesized negative values, 'Not Provided' cost basis, and even three-line entries for matured bonds like Treasury notes.",
+  },
+  {
+    question: "How do I convert my Morgan Stanley 1099 to CSV?",
+    answer:
+      "Upload your Morgan Stanley 1099-B Stock Plan Account PDF. The converter parses the multi-line transaction format with security descriptions, CUSIP numbers, and dollar amounts. It handles both covered and noncovered securities, short-term and long-term classifications, and VARIOUS date acquired entries.",
   },
 ];
 

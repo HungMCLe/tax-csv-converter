@@ -6,6 +6,7 @@ import { detectBroker, getBrokerDisplayName } from "@/lib/detect-broker";
 import { parseFidelityTransactions } from "@/lib/parsers/fidelity";
 import { parseRobinhoodTransactions } from "@/lib/parsers/robinhood";
 import { parseSchwabTransactions } from "@/lib/parsers/schwab";
+import { parseMorganStanleyTransactions } from "@/lib/parsers/morgan-stanley";
 import {
   Transaction,
   BrokerType,
@@ -56,9 +57,12 @@ export default function Converter() {
         case "schwab":
           txns = parseSchwabTransactions(pagesText);
           break;
+        case "morgan-stanley":
+          txns = parseMorganStanleyTransactions(pagesText);
+          break;
         default:
           throw new Error(
-            "Could not detect broker. Please make sure this is a 1099-B PDF from Fidelity, Robinhood, or Schwab."
+            "Could not detect broker. Please make sure this is a 1099-B PDF from Fidelity, Robinhood, Schwab, or Morgan Stanley."
           );
       }
 
@@ -226,7 +230,7 @@ function DropZone({
         or click to browse
       </p>
       <p className="mt-3 text-xs text-gray-400 dark:text-gray-600">
-        Supports Fidelity, Robinhood, and Charles Schwab 1099-B forms
+        Supports Fidelity, Robinhood, Schwab, and Morgan Stanley 1099-B forms
       </p>
     </div>
   );

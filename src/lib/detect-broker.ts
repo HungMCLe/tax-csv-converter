@@ -46,6 +46,17 @@ export function detectBroker(pagesText: string[]): BrokerType {
     return "schwab";
   }
 
+  // Morgan Stanley signatures
+  if (
+    textToCheck.includes("Morgan Stanley") ||
+    textToCheck.includes("MORGAN STANLEY") ||
+    textToCheck.includes("STOCK PLAN ACCOUNT") ||
+    allText.includes("Morgan Stanley") ||
+    allText.includes("MORGAN STANLEY")
+  ) {
+    return "morgan-stanley";
+  }
+
   return "unknown";
 }
 
@@ -60,6 +71,8 @@ export function getBrokerDisplayName(broker: BrokerType): string {
       return "Robinhood";
     case "schwab":
       return "Charles Schwab";
+    case "morgan-stanley":
+      return "Morgan Stanley";
     default:
       return "Unknown Broker";
   }
