@@ -86,9 +86,6 @@ function parseTransactionLine(line: string): Partial<Transaction> | null {
   // Skip summary lines
   if (/ecurity/i.test(line) || /otals/i.test(line)) return null;
 
-  // Skip "Total of N transactions" aggregation lines — these duplicate individual entries
-  if (/Total of \d+ transactions/i.test(line)) return null;
-
   const tokens = line.split(/\s+/);
   if (tokens.length < 7) return null;
 
